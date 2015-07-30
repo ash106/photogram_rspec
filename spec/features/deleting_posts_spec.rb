@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 feature "Deleting posts" do
-  scenario "can delete posts" do
-    post = create(:post, caption: "whoops!")
+  background do
+    user = create(:user)
+    sign_in_with user
+    post = create(:post, caption: "whoops!", user_id: user.id)
+  end
 
+  scenario "can delete posts" do
     visit '/'
     find(:xpath, "//a[contains(@href,'posts/1')]").click
     click_link 'Edit Post'
